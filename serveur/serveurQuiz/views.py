@@ -65,11 +65,11 @@ def create_question(id_questionnaire):
     questions = [question.to_json() for question in Question.query.all()]
     if not request.json:
         abort(400)
-    if not 'title' in request.json:
+    if not 'intitule' in request.json:
         abort(400)
     if not 'type' in request.json:
         abort(400)
-    question = Question(id=questions[-1]['id'] + 1, title=request.json['title'], questionType=request.json['type'], questionnaire_id=id_questionnaire)
+    question = Question(id=questions[-1]['id'] + 1, intitule=request.json['intitule'], questionType=request.json['type'], questionnaire_id=id_questionnaire)
     db.session.add(question)
     db.session.commit()
     return jsonify({'question': make_public_question(question.to_json())}), 201
@@ -108,11 +108,11 @@ def update_question(id_questionnaire, id_question):
     question = Question.query.get_or_404(id_question, id_questionnaire)
     if not request.json:
         abort(400)
-    if 'title' in request.json and type(request.json['title']) is not str:
+    if 'intitule' in request.json and type(request.json['intitule']) is not str:
         abort(400)
     if 'type' in request.json and type(request.json['type']) is not str:
         abort(400)
-    question.title = request.json.get('title', question.title)
+    question.intitule = request.json.get('intitule', question.intitule)
     question.questionType = request.json.get('type', question.questionType)
     db.session.commit()
     return jsonify({'question': make_public_question(question.to_json())})
