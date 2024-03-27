@@ -33,6 +33,6 @@ class Question(db.Model):
             'id': self.id,
             'intitule': self.intitule,
             'propositions': self.propositions,
-            'reponse': self.reponse,
+            'reponse': self.reponse
         }
         return json

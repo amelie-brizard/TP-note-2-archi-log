@@ -2,6 +2,7 @@ from flask import jsonify, abort, make_response, request, url_for
 from flask_cors import CORS, cross_origin
 from .app import app, db
 from .models import Question, Questionnaire
+import json
 
 def make_public_questionnaire(questionnaire):
     new_questionnaire = {}
@@ -23,9 +24,11 @@ def make_public_questionnaire_with_questions(questionnaire):
 
 def make_public_question(question):
     new_question = {}
+    id_quest = Question.query.filter(Question.id == question["id"]).scalar().id_questionnaire
+    print(id_quest)
     for field in question:
         if field == 'id':
-            new_question['url'] = url_for('get_question', id_questionnaire=question['id'], id_question=question['id'], _external=True)
+            new_question['url'] = url_for('get_question', id_questionnaire=id_quest, id_question=question['id'], _external=True)
         else:
             new_question[field] = question[field]
     return new_question
@@ -67,9 +70,15 @@ def create_question(id_questionnaire):
         abort(400)
     if not 'intitule' in request.json:
         abort(400)
-    if not 'type' in request.json:
+    if not 'propositions' in request.json:
         abort(400)
-    question = Question(id=questions[-1]['id'] + 1, intitule=request.json['intitule'], questionType=request.json['type'], questionnaire_id=id_questionnaire)
+    if not 'reponse' in request.json:
+        abort(400)
+    question = Question(id=questions[-1]['id'] + 1,
+                        intitule=request.json['intitule'],
+                        propositions=json.dumps(request.json['propositions']),
+                        reponse=request.json['reponse'],
+                        questionnaire_id=id_questionnaire)
     db.session.add(question)
     db.session.commit()
     return jsonify({'question': make_public_question(question.to_json())}), 201
@@ -110,10 +119,13 @@ def update_question(id_questionnaire, id_question):
         abort(400)
     if 'intitule' in request.json and type(request.json['intitule']) is not str:
         abort(400)
-    if 'type' in request.json and type(request.json['type']) is not str:
+    if 'propositions' in request.json and type(request.json['type']) is not list:
+        abort(400)
+    if 'reponse' in request.json and type(request.json['type']) is not list:
         abort(400)
     question.intitule = request.json.get('intitule', question.intitule)
-    question.questionType = request.json.get('type', question.questionType)
+    question.propositions = json.dumps(request.json.get('propositions', question.propositions))
+    question.reponse = request.json.get('reponse', question.reponse)
     db.session.commit()
     return jsonify({'question': make_public_question(question.to_json())})
 
