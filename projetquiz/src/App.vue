@@ -1,18 +1,27 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
+import QuizItem from './components/QuizItem.vue';
 </script>
 
 <template>
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
-  </div>
-  <HelloWorld msg="Vite + Vue" />
+  <QuizItem :quizs="quizs" />
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      quizs: [
+        {'id': 1, 'name': "Quiz 1", 'questions': [{'intitule': "Question 1", "propositions": ["Oui", "Non", "Coucou"], "reponse": "Coucou"}, {'intitule': "Question 2", "propositions": ["Bonjour", "Oui", "Baguette", "Heyy"], "reponse": "Heyy"}]},
+        {'id': 2, 'name': "Quiz 2", 'questions': [{'intitule': "Question 1", "propositions": ["Oui", "Test", "Coucou"], "reponse": "Test"}, {'intitule': "Question 2", "propositions": ["Oui", "Hehe", "Coucou"], "reponse": "Hehe"}, {'intitule': "Question 3", "propositions": ["Oui", "Non", "Coucou"], "reponse": "Non"}]},
+        {'id': 3, 'name': "Quiz 3", 'questions': [{'intitule': "Question 1", "propositions": ["Oui", "Baguette", "Coucou"], "reponse": "Baguette"}]}
+      ]
+    };
+  },
+  components: {
+    QuizItem
+  }
+};
+</script>
 
 <style scoped>
 .logo {
