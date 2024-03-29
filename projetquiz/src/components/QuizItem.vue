@@ -1,9 +1,18 @@
 <template>
     <div>
+        <h2>Ajouter un quiz</h2>
+        <label for="name">Nom : </label>
+        <input type="text" id="name" v-model="name">
+        <button @click="ajoutQuiz(name)">Ajouter quiz</button>
+    </div>
+    <div>
+        <h2>Consulter les quiz</h2>
         <ul>
             <li v-for="quiz in quizs" :key="quiz.id" @click="questions(quiz)">{{ quiz.name }}</li>
         </ul>
         <div v-if="selectedQuiz">
+            <button>Supprimer</button>
+            <button>Modifier</button>
             <h2>{{ selectedQuiz.name }}</h2>
             <ol>
                 <li v-for="question in selectedQuizQuestions" :key="question.intitule">
@@ -41,6 +50,14 @@ export default {
     methods: {
         questions(quiz) {
             this.selectedQuiz = quiz;
+        },
+        ajoutQuiz(nameQuiz) {
+            let newQuiz = {
+                id: this.quizs.length + 1,
+                name: nameQuiz,
+                questions: []
+            };
+            this.quizs.push(newQuiz);
         }
     },
     computed: {

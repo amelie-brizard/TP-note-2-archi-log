@@ -3,7 +3,9 @@ import QuizItem from './components/QuizItem.vue';
 </script>
 
 <template>
+  <div>
     <QuizItem :quizs="quizs" />
+  </div>
 </template>
 
 <script>
