@@ -4,7 +4,7 @@ import QuizItem from './components/QuizItem.vue';
 
 <template>
   <div>
-    <QuizItem :quizs="quizs" />
+    <QuizItem :quizs="quizs" @removeQuiz="supprimerQuiz" />
   </div>
 </template>
 
@@ -21,6 +21,11 @@ export default {
   },
   components: {
     QuizItem
+  },
+  methods: {
+    supprimerQuiz(idQuiz) {
+      this.quizs = this.quizs.filter(quiz => quiz.id !== idQuiz)
+    }
   }
 };
 </script>

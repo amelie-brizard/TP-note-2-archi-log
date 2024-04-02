@@ -11,7 +11,7 @@
             <li v-for="quiz in quizs" :key="quiz.id" @click="questions(quiz)">{{ quiz.name }}</li>
         </ul>
         <div v-if="selectedQuiz">
-            <button>Supprimer</button>
+            <button @click="supprimerQuiz(selectedQuiz.id)">Supprimer</button>
             <button>Modifier</button>
             <h2>{{ selectedQuiz.name }}</h2>
             <ol>
@@ -58,6 +58,10 @@ export default {
                 questions: []
             };
             this.quizs.push(newQuiz);
+        },
+        supprimerQuiz(idQuiz) {
+            this.$emit('removeQuiz', idQuiz);
+            location.reload();
         }
     },
     computed: {
