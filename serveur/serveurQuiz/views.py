@@ -24,7 +24,7 @@ def make_public_questionnaire_with_questions(questionnaire):
 
 def make_public_question(question):
     new_question = {}
-    id_quest = Question.query.filter(Question.id == question["id"]).scalar().id_questionnaire
+    id_quest = Question.query.filter(Question.id == question["id"]).scalar().questionnaire_id
     print(id_quest)
     for field in question:
         if field == 'id':
@@ -119,9 +119,9 @@ def update_question(id_questionnaire, id_question):
         abort(400)
     if 'intitule' in request.json and type(request.json['intitule']) is not str:
         abort(400)
-    if 'propositions' in request.json and type(request.json['type']) is not list:
+    if 'propositions' in request.json and type(request.json['propositions']) is not list:
         abort(400)
-    if 'reponse' in request.json and type(request.json['type']) is not list:
+    if 'reponse' in request.json and type(request.json['reponse']) is not int:
         abort(400)
     question.intitule = request.json.get('intitule', question.intitule)
     question.propositions = json.dumps(request.json.get('propositions', question.propositions))
