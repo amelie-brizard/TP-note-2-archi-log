@@ -50,11 +50,11 @@
                             </div>
                         </div>
                         <div v-else>
-                            <div v-for="(prop, index) in question.propositions" :key="index">
+                            <div v-for="(prop, arrayItemIndex) in question.propositions" :key="index">
                                 <input type="checkbox" :id="question.intitule + '-checkbox-' + index" :value="prop" />
                                 <label :for="question.intitule + '-checkbox-' + index">{{ prop }}</label>
-                                <button @click="supprimerQuestion(index)">Supprimer</button>
-                                <button @click="modifierQuestion(index)">Modifier</button>
+                                <button @click="supprimerQuestion(index, arrayItemIndex)">Supprimer</button>
+                                <button @click="modifierQuestion(index, arrayItemIndex)">Modifier</button>
                             </div>
                         </div>
                     </fieldset>
