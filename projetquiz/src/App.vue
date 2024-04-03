@@ -4,7 +4,7 @@ import QuizItem from './components/QuizItem.vue';
 
 <template>
   <div>
-    <QuizItem :quizs="quizs" @removeQuiz="supprimerQuiz" />
+    <QuizItem :quizs="quizs" @removeQuiz="supprimerQuiz" @supprimerQuestion="supprimerQuestion" @modifierQuestion="modifierQuestion" />
   </div>
 </template>
 

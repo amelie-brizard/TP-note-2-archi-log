@@ -12,9 +12,9 @@
         </ul>
         <div v-if="selectedQuiz">
             <button @click="supprimerQuiz(selectedQuiz.id)">Supprimer</button>
-            <button>Modifier</button>
+            <button @click="toggleModifierQuestions">Modifier</button>
             <h2>{{ selectedQuiz.name }}</h2>
-            <ol>
+            <ol v-if="!modifierQuestions">
                 <li v-for="question in selectedQuizQuestions" :key="question.intitule">
                     <fieldset>
                         <legend>{{ question.intitule }}</legend>
@@ -22,6 +22,29 @@
                             <div v-for="(prop, index) in question.propositions" :key="index">
                                 <input type="radio" :id="prop + '-' + question.intitule" :name="question.intitule" :value="prop" />
                                 <label :for="prop + '-' + question.intitule">{{ prop }}</label>
+                            </div>
+                        </div>
+                        <div v-else>
+                            <div v-for="(prop, index) in question.propositions" :key="index">
+                                <input type="checkbox" :id="question.intitule + '-checkbox-' + index" :value="prop" />
+                                <label :for="question.intitule + '-checkbox-' + index">{{ prop }}</label>
+                            </div>
+                        </div>
+                    </fieldset>
+                </li>
+            </ol>
+            <ol v-else>
+                <button @click="ajouterQuestion()">Ajouter</button>
+                <li v-for="question in selectedQuizQuestions" :key="question.intitule">
+                    <fieldset>
+                        <legend>{{ question.intitule }}</legend>
+                        <button @click="ajoutProposition(index)">Ajouter proposition</button>
+                        <div v-if="question.reponse.length === 1">
+                            <div v-for="(prop, index) in question.propositions" :key="index">
+                                <input type="radio" :id="prop + '-' + question.intitule" :name="question.intitule" :value="prop" />
+                                <label :for="prop + '-' + question.intitule">{{ prop }}</label>
+                                <button @click="supprimerQuestion(index)">Supprimer</button>
+                                <button @click="modifierQuestion(index)">Modifier</button>
                             </div>
                         </div>
                         <div v-else>
@@ -44,7 +67,8 @@ export default {
     },
     data() {
         return {
-            selectedQuiz: null
+            selectedQuiz: null,
+            modifierQuestions: false
         };
     },
     methods: {
@@ -62,6 +86,32 @@ export default {
         supprimerQuiz(idQuiz) {
             this.$emit('removeQuiz', idQuiz);
             location.reload();
+        },
+        toggleModifierQuestions() {
+            this.modifierQuestions = !this.modifierQuestions;
+        },
+        ajouterQuestion() {
+            let intituleQuestion = prompt("Intitulé de la question : ");
+            let newQuestion = {
+                intitule: intituleQuestion,
+                propositions: [],
+                reponse: []
+            }
+            this.selectedQuiz.questions.push(newQuestion);
+        },
+        modifierQuestion(index) {
+            let newTitle = prompt("Modifier l'intitulé de la question :");
+            this.selectedQuiz.questions.propositions[index] = newTitle;
+            this.$emit('modifierQuestion', index);
+        },
+        supprimerQuestion(index) {
+            console.log(this.selectedQuiz.questions);
+            this.$emit('supprimerQuestion', this.selectedQuiz.questions.propositions[index]);
+            location.reload();
+        },
+        ajoutProposition(index) {
+            let proposition = prompt("Ecrivez une proposition de réponse : ");
+            this.selectedQuiz.questions.propositions.push(proposition);
         }
     },
     computed: {
