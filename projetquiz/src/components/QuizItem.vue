@@ -51,6 +51,8 @@
                             <div v-for="(prop, index) in question.propositions" :key="index">
                                 <input type="checkbox" :id="question.intitule + '-checkbox-' + index" :value="prop" />
                                 <label :for="question.intitule + '-checkbox-' + index">{{ prop }}</label>
+                                <button @click="supprimerQuestion(index)">Supprimer</button>
+                                <button @click="modifierQuestion(index)">Modifier</button>
                             </div>
                         </div>
                     </fieldset>
