@@ -20,7 +20,8 @@
                         <legend>{{ question.intitule }}</legend>
                         <div v-if="question.reponse.length === 1">
                             <div v-for="(prop, index) in question.propositions" :key="index">
-                                <input type="radio" :id="prop + '-' + question.intitule" :name="question.intitule" :value="prop" />
+                                <input type="radio" :id="prop + '-' + question.intitule" :name="question.intitule"
+                                    :value="prop" />
                                 <label :for="prop + '-' + question.intitule">{{ prop }}</label>
                             </div>
                         </div>
@@ -40,21 +41,22 @@
                         <legend>{{ question.intitule }}</legend>
                         <button @click="ajoutProposition(index)">Ajouter proposition</button>
                         <div v-if="question.reponse.length === 1">
-                            <div v-for="(prop, index) in question.propositions" :key="index">
-                                <input type="radio" :id="prop + '-' + question.intitule" :name="question.intitule" :value="prop" />
+                            <div v-for="(prop, arrayItemIndex) in question.propositions" :key="index">
+                                <input type="radio" :id="prop + '-' + question.intitule" :name="question.intitule"
+                                    :value="prop" />
                                 <label :for="prop + '-' + question.intitule">{{ prop }}</label>
-                                <button @click="supprimerQuestion(index)">Supprimer</button>
-                                <button @click="modifierQuestion(index)">Modifier</button>
+                                <button @click="supprimerQuestion(index, arrayItemIndex)">Supprimer</button>
+                                <button @click="modifierQuestion(index, arrayItemIndex)">Modifier</button>
                             </div>
                             <p>Réponses : {{ question.reponse }}</p>
                             <button @click="ajouterReponse(index)">Ajouter une réponse</button>
                         </div>
                         <div v-else>
-                            <div v-for="(prop, index) in question.propositions" :key="index">
+                            <div v-for="(prop, arrayItemIndex) in question.propositions" :key="index">
                                 <input type="checkbox" :id="question.intitule + '-checkbox-' + index" :value="prop" />
                                 <label :for="question.intitule + '-checkbox-' + index">{{ prop }}</label>
-                                <button @click="supprimerQuestion(index)">Supprimer</button>
-                                <button @click="modifierQuestion(index)">Modifier</button>
+                                <button @click="supprimerQuestion(index, arrayItemIndex)">Supprimer</button>
+                                <button @click="modifierQuestion(index, arrayItemIndex)">Modifier</button>
                             </div>
                             <p>Réponses : {{ question.reponse }}</p>
                             <button @click="ajouterReponse(index)">Ajouter une réponse</button>
@@ -105,15 +107,16 @@ export default {
             }
             this.selectedQuiz.questions.push(newQuestion);
         },
-        modifierQuestion(index) {
+        modifierQuestion(index1, index2) {
             let newTitle = prompt("Modifier l'intitulé de la question :");
-            this.selectedQuiz.questions.propositions[index] = newTitle;
-            this.$emit('modifierQuestion', index);
+            if (newTitle != null) {
+                this.selectedQuiz.questions[index1].propositions[index2] = newTitle;
+                this.$emit('modifierQuestion', index1, index2);
+            }
         },
-        supprimerQuestion(index) {
-            console.log(this.selectedQuiz.questions);
-            this.$emit('supprimerQuestion', this.selectedQuiz.questions[index]);
-            location.reload();
+        supprimerQuestion(index1, index2) {
+            this.selectedQuiz.questions[index1].propositions.splice(index2, 1)
+            this.$emit('supprimerQuestion', this.selectedQuiz.questions[index1].propositions[index2]);
         },
         ajoutProposition(indexQ) {
             let proposition = prompt("Ecrivez une proposition de réponse : ");
