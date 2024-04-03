@@ -35,8 +35,8 @@
                 </li>
             </ol>
             <ol v-else>
-                <button @click="ajouterQuestion()">Ajouter</button>
-                <li v-for="(question, index) in selectedQuizQuestions" :key="question.intitule">
+                <button @click="ajouterQuestion()">Ajouter une question</button>
+                <li v-for="(question, index) in selectedQuizQuestions" :key="index">
                     <fieldset>
                         <legend>{{ question.intitule }}</legend>
                         <button @click="ajoutProposition(index)">Ajouter proposition</button>
@@ -48,6 +48,8 @@
                                 <button @click="supprimerQuestion(index, arrayItemIndex)">Supprimer</button>
                                 <button @click="modifierQuestion(index, arrayItemIndex)">Modifier</button>
                             </div>
+                            <p>Réponses : {{ question.reponse }}</p>
+                            <button @click="ajouterReponse(index)">Ajouter une réponse</button>
                         </div>
                         <div v-else>
                             <div v-for="(prop, arrayItemIndex) in question.propositions" :key="index">
@@ -56,6 +58,8 @@
                                 <button @click="supprimerQuestion(index, arrayItemIndex)">Supprimer</button>
                                 <button @click="modifierQuestion(index, arrayItemIndex)">Modifier</button>
                             </div>
+                            <p>Réponses : {{ question.reponse }}</p>
+                            <button @click="ajouterReponse(index)">Ajouter une réponse</button>
                         </div>
                     </fieldset>
                 </li>
@@ -114,9 +118,13 @@ export default {
             this.selectedQuiz.questions[index1].propositions.splice(index2, 1)
             this.$emit('supprimerQuestion', this.selectedQuiz.questions[index1].propositions[index2]);
         },
-        ajoutProposition(index) {
+        ajoutProposition(indexQ) {
             let proposition = prompt("Ecrivez une proposition de réponse : ");
-            this.selectedQuiz.questions.propositions.push(proposition);
+            this.selectedQuiz.questions[indexQ].propositions.push(proposition);
+        },
+        ajouterReponse(index) {
+            let reponse = prompt("Ecrivez une réponse : ");
+            this.selectedQuiz.questions[index].reponse.push(reponse);
         }
     },
     computed: {
@@ -127,6 +135,7 @@ export default {
                 return [];
             }
         }
-    }
+    },
+    emits: ['removeQuiz', 'supprimerQuestion', 'modifierQuestion']
 }
 </script>
