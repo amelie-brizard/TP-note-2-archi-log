@@ -105,13 +105,14 @@ export default {
         },
         modifierQuestion(index1, index2) {
             let newTitle = prompt("Modifier l'intitulé de la question :");
-            this.selectedQuiz.questions[index1].propositions[index2] = newTitle;
-            this.$emit('modifierQuestion', index1, index2);
+            if (newTitle != null) {
+                this.selectedQuiz.questions[index1].propositions[index2] = newTitle;
+                this.$emit('modifierQuestion', index1, index2);
+            }
         },
         supprimerQuestion(index1, index2) {
-            console.log(this.selectedQuiz.questions);
+            this.selectedQuiz.questions[index1].propositions.splice(index2, 1)
             this.$emit('supprimerQuestion', this.selectedQuiz.questions[index1].propositions[index2]);
-            location.reload();
         },
         ajoutProposition(index) {
             let proposition = prompt("Ecrivez une proposition de réponse : ");
