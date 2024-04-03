@@ -46,6 +46,8 @@
                                 <button @click="supprimerQuestion(index)">Supprimer</button>
                                 <button @click="modifierQuestion(index)">Modifier</button>
                             </div>
+                            <p>Réponses : {{ question.reponse }}</p>
+                            <button @click="ajouterReponse(index)">Ajouter une réponse</button>
                         </div>
                         <div v-else>
                             <div v-for="(prop, index) in question.propositions" :key="index">
@@ -54,6 +56,8 @@
                                 <button @click="supprimerQuestion(index)">Supprimer</button>
                                 <button @click="modifierQuestion(index)">Modifier</button>
                             </div>
+                            <p>Réponses : {{ question.reponse }}</p>
+                            <button @click="ajouterReponse(index)">Ajouter une réponse</button>
                         </div>
                     </fieldset>
                 </li>
@@ -114,6 +118,10 @@ export default {
         ajoutProposition(indexQ) {
             let proposition = prompt("Ecrivez une proposition de réponse : ");
             this.selectedQuiz.questions[indexQ].propositions.push(proposition);
+        },
+        ajouterReponse(index) {
+            let reponse = prompt("Ecrivez une réponse : ");
+            this.selectedQuiz.questions[index].reponse.push(reponse);
         }
     },
     computed: {
