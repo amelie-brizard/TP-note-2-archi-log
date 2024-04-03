@@ -34,8 +34,8 @@
                 </li>
             </ol>
             <ol v-else>
-                <button @click="ajouterQuestion()">Ajouter</button>
-                <li v-for="question in selectedQuizQuestions" :key="question.intitule">
+                <button @click="ajouterQuestion()">Ajouter une question</button>
+                <li v-for="(question, index) in selectedQuizQuestions" :key="index">
                     <fieldset>
                         <legend>{{ question.intitule }}</legend>
                         <button @click="ajoutProposition(index)">Ajouter proposition</button>
@@ -108,12 +108,12 @@ export default {
         },
         supprimerQuestion(index) {
             console.log(this.selectedQuiz.questions);
-            this.$emit('supprimerQuestion', this.selectedQuiz.questions.propositions[index]);
+            this.$emit('supprimerQuestion', this.selectedQuiz.questions[index]);
             location.reload();
         },
-        ajoutProposition(index) {
+        ajoutProposition(indexQ) {
             let proposition = prompt("Ecrivez une proposition de réponse : ");
-            this.selectedQuiz.questions.propositions.push(proposition);
+            this.selectedQuiz.questions[indexQ].propositions.push(proposition);
         }
     },
     computed: {
@@ -124,6 +124,7 @@ export default {
                 return [];
             }
         }
-    }
+    },
+    emits: ['removeQuiz', 'supprimerQuestion', 'modifierQuestion']
 }
 </script>
