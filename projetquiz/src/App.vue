@@ -1,30 +1,34 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
+import QuizItem from './components/QuizItem.vue';
 </script>
 
 <template>
   <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+    <QuizItem :quizs="quizs" @removeQuiz="supprimerQuiz" @supprimerQuestion="supprimerQuestion" @modifierQuestion="modifierQuestion" />
   </div>
-  <HelloWorld msg="Vite + Vue" />
 </template>
 
+<script>
+export default {
+  data() {
+    return {
+      quizs: [
+        {'id': 1, 'name': "Quiz 1", 'questions': [{'intitule': "De quelle couleur est le ciel quand il fait beau ?", "propositions": ["Orange", "Bleu", "Rouge", "Violet"], "reponse": ["Bleu"]}, {'intitule': "Façon de dire bonjour", "propositions": ["Bonjour", "Oui", "Baguette", "Heyy"], "reponse": ["Heyy", "Bonjour"]}]},
+        {'id': 2, 'name': "Quiz 2", 'questions': [{'intitule': "Test", "propositions": ["Oui", "Test", "Coucou"], "reponse": ["Test"]}, {'intitule': "Hehe", "propositions": ["Oui", "Hehe", "Coucou"], "reponse": ["Hehe"]}, {'intitule': "Inverse de oui", "propositions": ["Oui", "Non", "Peut-être", "Coucou"], "reponse": ["Non"]}]},
+        {'id': 3, 'name': "Quiz 3", 'questions': [{'intitule': "Question 1", "propositions": ["Oui", "Baguette", "Coucou"], "reponse": ["Baguette"]}]}
+      ]
+    };
+  },
+  components: {
+    QuizItem
+  },
+  methods: {
+    supprimerQuiz(idQuiz) {
+      this.quizs = this.quizs.filter(quiz => quiz.id !== idQuiz)
+    }
+  }
+};
+</script>
+
 <style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
 </style>
